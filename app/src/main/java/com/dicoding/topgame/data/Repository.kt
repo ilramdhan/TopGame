@@ -5,7 +5,6 @@ import com.dicoding.topgame.model.GameData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.internal.NopCollector.emit
 
 class Repository {
     private val listGame = mutableListOf<Game>()
@@ -18,13 +17,13 @@ class Repository {
         }
     }
 
-    fun getGameById(gameId: Int): Game {
+    fun getGameById(GameId: Int): Game {
         return listGame.first {
-            it.id == gameId
+            it.id == GameId
         }
     }
 
-    fun getFavoriteGame(): List<Game> {
+    fun getFavoriteGame(): Flow<List<Game>> {
         return flowOf(listGame.filter { it.isFavorite })
     }
 
@@ -35,8 +34,8 @@ class Repository {
         emit(data)
     }
 
-    fun updateGame(gameId: Int, newState: Boolean): Flow<Boolean> {
-        val index = listGame.indexOfFirst { it.id == gameId }
+    fun updateGame(GameId: Int, newState: Boolean): Flow<Boolean> {
+        val index = listGame.indexOfFirst { it.id == GameId }
         val result = if (index >= 0) {
             val game = listGame[index]
             listGame[index] = game.copy(isFavorite = newState)
@@ -45,5 +44,17 @@ class Repository {
             false
         }
         return flowOf(result)
+    }
+
+    companion object {
+        @Volatile
+        private var instance: Repository? = null
+
+        fun getInstance(): Repository =
+            instance ?: synchronized(this) {
+                Repository().apply {
+                    instance = this
+                }
+            }
     }
 }

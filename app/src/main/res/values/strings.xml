@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">TopGame</string>
+    <string name="title_activity_home_screen">Home Screen</string>
+    <string name="search">Search your favorite game</string>
+    <string name="empty_list">Empty List</string>
+    <string name="back">Back</string>
+    <string name="favorite">Add Favorite</string>
+    <string name="remove">Remove Favorite</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="fav">Favorite</string>
 </resources>
